@@ -1,0 +1,39 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: postgres-nginx
+spec:
+  type: LoadBalancer
+  selector:
+    app: postgres-nginx
+  ports:
+  - port: 3333
+    targetPort: 3000
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: postgres-nginx
+spec:
+  replicas: 3
+  selector:
+    matchLabels:
+      app:  postgres-nginx
+  template:
+    metadata:
+      labels:
+        app: postgres-nginx
+    spec:
+    
+      containers:
+      - name: postgres-nginx
+        image: rustamdev/postgres-nginx:latest
+        resources:
+          requests:
+            memory: "256Mi"
+            cpu: "100m"
+          limits:
+            memory: "512Mi"
+            cpu: "250m"
+        ports:
+        - containerPort: 3000

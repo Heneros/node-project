@@ -1,0 +1,26 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: kubectl-postgres
+spec:
+  replicas: 5
+  selector:
+    matchLabels:
+      app: kubectl-postgres
+  template:
+    metadata:
+      labels:
+        app: kubectl-postgres
+    spec:
+      containers:
+      - name: kubectl-postgres
+        image: rustamdev/kubectl-postgres
+        resources:
+          requests:
+            memory: "256Mi"
+            cpu: "100m"
+          limits:
+            memory: "512Mi"
+            cpu: "250m"
+        ports:
+        - containerPort: 3000
